@@ -1,0 +1,185 @@
+<!-- Contenu principal -->
+<div class="dashboard-container">
+
+  <!-- Mon partenaire -->
+  <% if @partner %>
+    <div class="dashboard-widget partner-widget">
+      <!-- Contenu du partenaire -->
+      <div class="partner-content">
+        <div class="partner-details">
+          <div class="partner-avatar">
+            <%= @partner.email.first.upcase %>
+          </div>
+          <div class="partner-info">
+            <p class="partner-name"><%= @partner.email.split('@').first.humanize %></p>
+            <p class="partner-email"><%= @partner.email %></p>
+          </div>
+        </div>
+        <div class="partner-actions">
+          <span class="partner-badge">
+            🔗 Connecté
+          </span>
+          <%= button_to "Se déconnecter", disconnect_partner_favor_requests_path, method: :delete, class: "btn-disconnect", data: { confirm: "Êtes-vous sûr de vouloir vous déconnecter de votre partenaire ?" } %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <!-- Message pour configurer le partenaire -->
+    <div class="dashboard-widget">
+      <div class="dashboard-card" style="text-align: center;">
+        <h2>💎 Mon partenaire</h2>
+        <p class="card-subtitle">Vous n'avez pas encore de partenaire. Configurez-le pour commencer.</p>
+        <%= link_to "Configurer mon partenaire", setup_partner_path, class: "btn-luxe-primary" %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Sections des désirs et des demandes -->
+  <div class="dashboard-main-content">
+    <!-- Désirs du moment -->
+    <div class="dashboard-widget">
+      <div class="dashboard-card">
+        <h2>
+          <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26">
+            <path d="M13.04,1.23C13.04,1.23,5.6,8.38,5.5,14.21c0,3.74,3.03,6.79,6.77,6.79s6.77-3.05,6.77-6.79c-0.11-6.47-7-12.98-7-12.98z" fill="#8B1538"/>
+          </svg>
+          Désirs du moment
+        </h2>
+        <p class="card-subtitle">Choisissez votre type de demande sensuelle...</p>
+        <div class="category-grid">
+          <%# Passion - This card now opens a modal %>
+          <div id="passionCard" class="category-card category-card--passion">
+            <span class="category-icon"><%= FavorRequest::CATEGORIES['passion'][:icon] %></span>
+            <div class="category-content">
+              <p class="category-title"><%= FavorRequest::CATEGORIES['passion'][:title] %></p>
+              <p class="category-subtitle"><%= FavorRequest::CATEGORIES['passion'][:subtitle] %></p>
+            </div>
+          </div>
+
+          <%# Convocation %>
+          <%= link_to new_favor_request_path(category: :convocation), class: "category-card category-card--convocation" do %>
+            <span class="category-icon"><%= FavorRequest::CATEGORIES['convocation'][:icon] %></span>
+            <div class="category-content">
+              <p class="category-title"><%= FavorRequest::CATEGORIES['convocation'][:title] %></p>
+              <p class="category-subtitle"><%= FavorRequest::CATEGORIES['convocation'][:subtitle] %></p>
+            </div>
+          <% end %>
+
+          <%# Sexto Hot %>
+          <%= link_to new_favor_request_path(category: :sexto_hot), class: "category-card category-card--sexto-hot" do %>
+            <span class="category-icon"><%= FavorRequest::CATEGORIES['sexto_hot'][:icon] %></span>
+            <div class="category-content">
+              <p class="category-title"><%= FavorRequest::CATEGORIES['sexto_hot'][:title] %></p>
+              <p class="category-subtitle"><%= FavorRequest::CATEGORIES['sexto_hot'][:subtitle] %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="dashboard-widget">
+      <div class="dashboard-card">
+        <h3>🔔 Notifications</h3>
+        <ul class="request-list">
+          <% if @notifications.any? %>
+            <% @notifications.each do |notification| %>
+              <li class="request-item">
+                <div class="request-info">
+                  <% if notification.sender == current_user %>
+                    <p class="request-meta">
+                      <span class="request-direction">Envoyée à</span>
+                      <strong><%= notification.receiver.email.split('@').first.humanize %></strong>
+                    </p>
+                  <% else %>
+                    <p class="request-meta">
+                      <span class="request-direction">Reçue de</span>
+                      <strong><%= notification.sender.email.split('@').first.humanize %></strong>
+                    </p>
+                  <% end %>
+                  <p class="request-message"><%= link_to format_favor_request_details(notification), conversation_path(notification.conversation) %></p>
+                </div>
+
+                <div class="request-actions">
+                  <span class="request-status status-<%= notification.status %>">
+                    <%= notification.status&.humanize %>
+                  </span>
+                  <% if notification.receiver == current_user && notification.pending? %>
+                    <div class="request-buttons">
+                      <%= button_to "Accepter", accept_favor_request_path(notification), method: :patch, class: "btn-accept" %>
+                      <%= button_to "Refuser", decline_favor_request_path(notification), method: :patch, class: "btn-decline" %>
+                    </div>
+                  <% end %>
+                </div>
+              </li>
+            <% end %>
+          <% else %>
+            <li class="request-item--empty">
+              <p>Vous n'avez aucune notification pour le moment.</p>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Passion Scenarios -->
+<div id="passionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h3>🔥 Passion</h3>
+    <p class="card-subtitle">Quel est votre désir ce soir ?</p>
+    <div class="category-grid">
+      <%= link_to new_favor_request_path(category: 'tu_es_a_moi'), class: "category-card category-card--passion" do %>
+        <span class="category-icon">⛓️</span>
+        <div class="category-content">
+          <p class="category-title">Tu es à moi</p>
+          <p class="category-subtitle">Scénario de domination.</p>
+        </div>
+      <% end %>
+      <%= link_to new_favor_request_path(category: 'controle_moi'), class: "category-card category-card--passion" do %>
+        <span class="category-icon">🎭</span>
+        <div class="category-content">
+          <p class="category-title">Contrôle moi</p>
+          <p class="category-subtitle">Scénario de soumission.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const passionModal = document.getElementById('passionModal');
+    const passionCard = document.getElementById('passionCard');
+    const closeButton = document.querySelector('#passionModal .close-button');
+
+    if (passionCard) {
+      passionCard.addEventListener('click', (event) => {
+        event.preventDefault();
+        passionModal.style.display = 'flex';
+      });
+    }
+
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        passionModal.style.display = 'none';
+      });
+    }
+
+    window.addEventListener('click', (event) => {
+      if (event.target == passionModal) {
+        passionModal.style.display = 'none';
+      }
+    });
+
+    // Close with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        passionModal.style.display = 'none';
+      }
+    });
+  });
+</script>

@@ -1,0 +1,37 @@
+<div class="form-container">
+  <%= form_with(model: @favor_request, local: true, class: "favor-request-form") do |f| %>
+    <%= f.hidden_field :category %>
+
+    <div class="form-header" style="background-color: <%= @favor_request.category_color %>;">
+      <div class="form-icon"><%= @favor_request.category_icon %></div>
+      <h1><%= @favor_request.category_title %></h1>
+      <p class="card-subtitle"><%= @favor_request.category_subtitle %></p>
+    </div>
+
+    <div class="form-body">
+      <% if @favor_request.errors.any? %>
+        <div class="error-explanation">
+          <h3><%= pluralize(@favor_request.errors.count, "erreur") %> :</h3>
+          <ul>
+            <% @favor_request.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% if @favor_request.category == 'convocation' %>
+        <%= render 'convocation_form', f: f %>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :message, '💌 Votre message' %>
+        <%= f.text_area :message, class: 'form-control', rows: 4, placeholder: 'Ajoutez un message personnel pour pimenter la demande...' %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit (@favor_request.category == 'convocation' ? '⚡ Envoyer la convocation' : 'Envoyer le désir'), class: 'btn-submit' %>
+      </div>
+    </div>
+  <% end %>
+</div>

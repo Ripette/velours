@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #000000 0%, #2D1B1B 50%, #4A1F1F 100%);
+      min-height: 100vh;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Contenu principal EXACTEMENT comme l'image -->
+<div style="display: flex; justify-content: center; align-items: center; min-height: 80vh; padding: 40px;">
+  <div style="background: white; border-radius: 20px; padding: 60px; max-width: 600px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);">
+
+    <!-- Logo central -->
+    <div style="margin-bottom: 40px;">
+      <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #8B1538 0%, #DC143C 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 10px 30px rgba(139, 21, 56, 0.3);">
+        <%= image_tag "velours_logo.svg", alt: "Velours", style: "width: 70px; height: 70px; filter: brightness(0) invert(1);" %>
+      </div>
+    </div>
+
+    <!-- Titre et sous-titre -->
+    <h2 style="color: #8B1538; font-size: 32px; font-weight: 600; margin-bottom: 16px; font-family: 'Times New Roman', serif;">
+      💕 Configurez<br>votre partenaire
+    </h2>
+
+    <p style="color: #666; font-size: 18px; margin-bottom: 40px; line-height: 1.6;">
+      Pour commencer à utiliser Velours, vous devez d'abord<br>
+      connecter votre compte à celui de votre partenaire.
+    </p>
+
+    <!-- Formulaire -->
+    <%= form_with url: setup_partner_favor_requests_path, method: :post, local: true do |f| %>
+      <div style="margin-bottom: 24px;">
+        <%= f.label :partner_email, "EMAIL DE VOTRE PARTENAIRE",
+                    style: "display: block; color: #8B1538; font-weight: 600; margin-bottom: 12px; text-align: left; font-size: 14px; letter-spacing: 1px;" %>
+        <%= f.email_field :partner_email,
+                          placeholder: "exemple@email.com",
+                          style: "width: 100%; padding: 16px 20px; border: none; border-radius: 10px; font-size: 16px; background: rgba(0, 0, 0, 0.8); color: white; outline: none;" %>
+      </div>
+
+      <%= f.submit "💖 Connecter mon partenaire",
+                   style: "background: linear-gradient(135deg, #DC143C, #8B1538); color: white; border: none; padding: 18px 20px; border-radius: 25px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 4px 15px rgba(139, 21, 56, 0.3); white-space: normal; height: auto; line-height: 1.2;" %>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div style="background: rgba(220, 20, 60, 0.1); color: #DC143C; padding: 16px; border-radius: 10px; margin-top: 20px; border: 1px solid rgba(220, 20, 60, 0.3);">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+</body>
+</html>

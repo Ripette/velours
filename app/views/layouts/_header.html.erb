@@ -1,0 +1,43 @@
+<header class="app-header">
+  <div class="header-grid-container">
+
+    <% if user_signed_in? %>
+      <!-- Col 1: Left (Logo & Title) -->
+      <div class="header-logo-group">
+        <%= link_to root_path, class: "d-flex align-items-center text-decoration-none" do %>
+          <%= image_tag 'velours_logo.svg', alt: 'Velours', class: 'header-logo' %>
+          <span class="header-title ms-3">Velours</span>
+        <% end %>
+      </div>
+
+      <!-- Col 2: Center (Welcome Message) -->
+      <div class="header-welcome-message">
+        <span>Bonsoir <%= current_user.email.split('@').first.split('.').first.humanize %> 💋</span>
+      </div>
+
+      <!-- Col 3: Right (Action Buttons) -->
+      <div class="header-actions-group">
+        <%= link_to conversations_path, class: 'btn-luxe-primary' do %>
+          <i class="fas fa-envelope"></i>
+          <span class="btn-text">Mes Conversations</span>
+        <% end %>
+        <%= link_to root_path, class: 'btn-luxe-primary' do %>
+          <i class="fas fa-home"></i>
+          <span class="btn-text">Accueil</span>
+        <% end %>
+        <%= link_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn-luxe-primary' do %>
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="btn-text">Déconnexion</span>
+        <% end %>
+      </div>
+
+    <% else %>
+      <!-- Fallback for non-logged-in users -->
+      <div class="header-fallback-group">
+        <%= image_tag 'velours_logo.svg', alt: 'Velours', class: 'header-logo' %>
+        <span class="header-title">Velours</span>
+      </div>
+    <% end %>
+
+  </div>
+</header>

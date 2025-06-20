@@ -1,0 +1,21 @@
+<%= f.fields_for :convocation_detail do |convocation_f| %>
+  <div class="form-group">
+    <%= convocation_f.label :location, '📍 Lieu' %>
+    <%= convocation_f.text_field :location, class: 'form-control', placeholder: 'Ex: Ma chambre, un hôtel de luxe...' %>
+  </div>
+
+  <div class="form-group">
+    <%= convocation_f.label :timing, '⏳ Dans combien de temps ?' %>
+    <%= convocation_f.text_field :timing, class: 'form-control', placeholder: 'Ex: Ce soir, dans 1 heure...' %>
+  </div>
+
+  <div class="form-group">
+    <%= convocation_f.label :attire, '👗 Tenue' %>
+    <%= convocation_f.text_field :attire, class: 'form-control', placeholder: 'Ex: Lingerie fine, rien du tout...' %>
+  </div>
+
+  <div class="form-group">
+    <%= convocation_f.label :mood, '✨ Mood quand tu arrives' %>
+    <%= convocation_f.text_field :mood, class: 'form-control', placeholder: 'Ex: Soumis(e), entreprenant(e)...' %>
+  </div>
+<% end %>

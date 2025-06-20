@@ -1,0 +1,39 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>Conversation avec <%= @conversation.other_user(current_user).email.split('@').first.humanize %></h2>
+  </div>
+
+  <div class="chat-messages" id="messages">
+    <% @messages.each do |message| %>
+      <% if message.from?(current_user) %>
+        <div class="chat-message is-me">
+          <div class="message-bubble">
+            <p><%= message.content %></p>
+          </div>
+        </div>
+      <% else %>
+        <div class="chat-message is-partner">
+           <div class="message-bubble">
+            <p><%= message.content %></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="chat-form-container">
+    <%= form_with(model: [@conversation, @message], url: conversation_messages_path(@conversation), class: "chat-form") do |f| %>
+      <%= f.text_field :content, class: "form-control", placeholder: "Écrivez votre désir...", autocomplete: "off" %>
+      <%= f.submit "Envoyer", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const messagesContainer = document.getElementById('messages');
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  });
+</script>

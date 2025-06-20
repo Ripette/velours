@@ -1,0 +1,47 @@
+<div style="text-align: center; margin-bottom: 2rem;">
+  <%= image_tag "velours_logo.svg", alt: "Velours", style: "width: 80px; height: 80px;" %>
+  <h1>🌹 Demande de faveur</h1>
+</div>
+
+<div class="card">
+  <div class="request-meta" style="margin-bottom: 2rem; background: rgba(139, 21, 56, 0.1); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(212, 165, 116, 0.3);">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+      <div><strong>👤 De :</strong> <%= @favor_request.sender.email %></div>
+      <div><strong>🎭 À :</strong> <%= @favor_request.receiver.email %></div>
+    </div>
+    <div><strong>🕐 Créée le :</strong> <%= @favor_request.created_at.strftime("%d/%m/%Y à %H:%M") %></div>
+  </div>
+
+  <div class="request-message" style="font-size: 1.4rem; margin: 2.5rem 0; text-align: center; padding: 2.5rem; background: linear-gradient(135deg, rgba(139, 21, 56, 0.2), rgba(220, 20, 60, 0.1)); border-radius: 20px; border: 2px solid rgba(212, 165, 116, 0.4); position: relative;">
+    <%= @favor_request.message %>
+  </div>
+
+  <div class="center-actions" style="margin: 2.5rem 0;">
+    <span class="request-status status-<%= @favor_request.status %>" style="font-size: 1.2rem; padding: 1rem 2.5rem;">
+      <% case @favor_request.status %>
+      <% when 'pending' %>
+        ⏳ En attente de réponse
+      <% when 'accepted' %>
+        💖 Demande acceptée avec plaisir
+      <% when 'declined' %>
+        💔 Demande poliment refusée
+      <% end %>
+    </span>
+  </div>
+
+  <% if @favor_request.receiver == current_user && @favor_request.pending? %>
+    <div class="center-actions" style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid rgba(139, 21, 56, 0.3);">
+      <p style="color: var(--velours-gold); margin-bottom: 2rem; font-style: italic; text-align: center; font-size: 1.1rem;">
+        💭 Que souhaitez-vous répondre à cette demande sensuelle ?
+      </p>
+      <div class="request-actions">
+        <%= link_to '💚 Accepter avec plaisir', accept_favor_request_path(@favor_request), method: :patch, class: 'btn btn-accept' %>
+        <%= link_to '💔 Refuser poliment', decline_favor_request_path(@favor_request), method: :patch, class: 'btn btn-decline' %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="center-actions" style="margin-top: 3rem;">
+    <%= link_to '🏠 Retour au boudoir', favor_requests_path, class: 'btn btn-secondary' %>
+  </div>
+</div>

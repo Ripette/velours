@@ -1,0 +1,24 @@
+<div class="conversations-container">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="card-title">Mes Conversations</h1>
+    </div>
+    <div class="conversation-list">
+      <% @conversations.each do |conversation| %>
+        <%= link_to conversation_path(conversation), class: "conversation-link" do %>
+          <div class="conversation-info">
+            <i class="fas fa-comments conversation-icon"></i>
+            <span>
+              <% if conversation.topic.present? %>
+                <%= conversation.topic %> de <strong><%= conversation.other_user(current_user).email.split('@').first.humanize %></strong>
+              <% else %>
+                Conversation avec <strong><%= conversation.other_user(current_user).email.split('@').first.humanize %></strong>
+              <% end %>
+            </span>
+          </div>
+          <span class="message-count"><%= conversation.messages.count %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

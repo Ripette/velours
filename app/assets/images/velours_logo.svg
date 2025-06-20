@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#8B1538;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5D1A1A;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F5F1E8;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D4A574;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F5F1E8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Cercle de fond -->
+  <circle cx="200" cy="200" r="190" fill="url(#bgGrad)" stroke="#722F37" stroke-width="4"/>
+
+  <!-- Silhouettes sensuelles -->
+  <g opacity="0.6" fill="#A52A2A" stroke="#DC143C" stroke-width="1.5">
+    <!-- Silhouette femme (gauche) -->
+    <path d="M120 120 Q110 110 105 125 Q100 140 110 145 Q115 150 125 145 Q135 140 140 125 Q145 120 135 115 Q125 110 120 120"/>
+    <!-- Cheveux femme -->
+    <path d="M105 125 Q95 115 90 130 Q85 140 95 145 Q100 150 110 145"/>
+    <!-- Corps femme -->
+    <path d="M125 145 Q120 155 115 170 Q110 185 120 195 Q125 200 135 195 Q145 185 140 170 Q135 155 125 145"/>
+
+    <!-- Silhouette homme (droite) -->
+    <path d="M280 120 Q290 110 295 125 Q300 140 290 145 Q285 150 275 145 Q265 140 260 125 Q255 120 265 115 Q275 110 280 120"/>
+    <!-- Corps homme -->
+    <path d="M275 145 Q280 155 285 170 Q290 185 280 195 Q275 200 265 195 Q255 185 260 170 Q265 155 275 145"/>
+
+    <!-- Connexion/Baiser au centre -->
+    <path d="M140 140 Q160 130 180 135 Q200 140 220 135 Q240 130 260 140 Q250 150 230 155 Q210 160 200 155 Q190 160 170 155 Q150 150 140 140"/>
+  </g>
+
+  <!-- Élément décoratif central (cœur stylisé) -->
+  <g fill="#DC143C" opacity="0.4">
+    <path d="M200 180 Q185 165 170 180 Q170 195 200 220 Q230 195 230 180 Q215 165 200 180"/>
+  </g>
+
+  <!-- Texte "Velours" -->
+  <text x="200" y="280" font-family="Libre Baskerville, serif" font-size="48" font-weight="700" text-anchor="middle" fill="url(#textGrad)" letter-spacing="2px">
+    Velours
+  </text>
+
+  <!-- Tagline -->
+  <text x="200" y="350" font-family="Crimson Text, serif" font-size="16" font-weight="600" text-anchor="middle" fill="#D4A574" letter-spacing="1px">
+    Vos envies, vos règles.
+  </text>
+</svg>

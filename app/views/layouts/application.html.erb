@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Velours</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+  </head>
+
+  <body>
+    <%= render 'layouts/header' %>
+
+    <div id="flash-container" class="flash-container">
+      <% flash.each do |type, message| %>
+        <div class="flash-message <%= type %>">
+          <%= message %>
+        </div>
+      <% end %>
+    </div>
+
+    <main class="container">
+      <%= yield %>
+    </main>
+
+    <div id="modal-backdrop" class="modal-backdrop"></div>
+
+    <script>
+      document.addEventListener('turbo:load', () => {
+        // --- Flash message handler ---
+        const flashMessages = document.querySelectorAll('.flash-message');
+
+        if (flashMessages.length > 0) {
+          flashMessages.forEach((message, index) => {
+            // Stagger the animation for multiple messages
+            setTimeout(() => {
+              message.classList.add('show');
+            }, index * 100);
+
+            // Hide after 2.5 seconds (giving a bit more time for the animation)
+            setTimeout(() => {
+              message.classList.remove('show');
+              // Optional: remove from DOM after transition
+              setTimeout(() => {
+                if (message.parentElement) {
+                  message.parentElement.removeChild(message);
+                }
+              }, 500); // Wait for fade-out transition
+            }, 2500 + (index * 100));
+          });
+        }
+
+        // --- Modal handler ---
+        const modal = document.getElementById('scenario-modal');
+        const backdrop = document.getElementById('modal-backdrop');
+
+        // Listen for form submission inside the modal
+        const scenarioForm = document.getElementById('passion-scenario-form');
+        if (scenarioForm) {
+          scenarioForm.addEventListener('submit', function() {
+            closeModal();
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+fr:
+  activerecord:
+    errors:
+      models:
+        favor_request:
+          attributes:
+            receiver:
+              required: "Le destinataire doit exister."
+      messages:
+        required: "doit être rempli(e)"
+
+  helpers:
+    submit:
+      create: "Créer un(e) %{model}"
+      submit: "Enregistrer %{model}"
+      update: "Modifier ce(tte) %{model}"
+
+  errors:
+    messages:
+      must_be_different: "ne peut pas être le même que l'expéditeur"

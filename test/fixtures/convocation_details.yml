@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  favor_request: one
+  location: MyString
+  timing: MyString
+  attire: MyString
+  mood: MyString
+
+two:
+  favor_request: two
+  location: MyString
+  timing: MyString
+  attire: MyString
+  mood: MyString
