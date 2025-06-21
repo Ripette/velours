@@ -1,0 +1,56 @@
+fr:
+  errors:
+    messages:
+      not_found: "n'a pas été trouvé"
+      not_saved: "n'a pas pu être enregistré"
+      blank: "doit être rempli(e)"
+  devise:
+    failure:
+      already_authenticated: "Vous êtes déjà connecté."
+      unauthenticated: "Vous devez vous connecter ou vous inscrire avant de continuer."
+      unconfirmed: "Vous devez confirmer votre compte avant de continuer."
+      locked: "Votre compte est verrouillé."
+      invalid: "Email ou mot de passe invalide."
+      invalid_token: "Jeton d'authentification invalide."
+      timeout: "Votre session a expiré, veuillez vous reconnecter."
+      inactive: "Votre compte n'est pas encore activé."
+    sessions:
+      signed_in: "Connexion réussie."
+      signed_out: "Déconnexion réussie."
+      already_signed_out: "Déjà déconnecté."
+    passwords:
+      send_instructions: "Vous allez recevoir un email avec les instructions pour réinitialiser votre mot de passe."
+      updated: "Votre mot de passe a été modifié avec succès. Vous êtes maintenant connecté."
+      updated_not_active: "Votre mot de passe a été modifié avec succès."
+      no_token: "Le jeton de réinitialisation du mot de passe est manquant. Veuillez en faire la demande à nouveau."
+      send_paranoid_instructions: "Si votre email existe dans notre base, vous recevrez un email avec les instructions pour réinitialiser votre mot de passe."
+    confirmations:
+      send_instructions: "Vous allez recevoir un email avec les instructions pour confirmer votre compte."
+      confirmed: "Votre compte a été confirmé avec succès."
+      send_paranoid_instructions: "Si votre email existe dans notre base, vous recevrez un email avec les instructions pour confirmer votre compte."
+      already_confirmed: "Votre compte est déjà confirmé. Veuillez vous connecter."
+      not_found: "Aucun utilisateur trouvé avec cet email."
+      send_instructions: "Vous allez recevoir un email avec les instructions pour confirmer votre compte."
+    registrations:
+      signed_up: "Bienvenue ! Vous vous êtes inscrit avec succès."
+      updated: "Votre compte a été mis à jour avec succès."
+      destroyed: "Votre compte a été supprimé avec succès. Nous espérons vous revoir bientôt !"
+      signed_up_but_unconfirmed: "Un message avec un lien de confirmation a été envoyé à votre adresse email. Veuillez ouvrir ce lien pour activer votre compte."
+      signed_up_but_inactive: "Vous vous êtes inscrit avec succès. Cependant, nous n'avons pas pu vous connecter car votre compte n'est pas encore activé."
+      signed_up_but_locked: "Vous vous êtes inscrit avec succès. Cependant, nous n'avons pas pu vous connecter car votre compte est verrouillé."
+      updated_but_not_signed_in: "Votre compte a été mis à jour avec succès. Veuillez vous reconnecter."
+    unlocks:
+      send_instructions: "Vous allez recevoir un email avec les instructions pour déverrouiller votre compte."
+      unlocked: "Votre compte a été déverrouillé avec succès. Veuillez vous connecter."
+      send_paranoid_instructions: "Si votre email existe dans notre base, vous recevrez un email avec les instructions pour déverrouiller votre compte."
+    mailer:
+      confirmation_instructions:
+        subject: "Instructions de confirmation"
+      reset_password_instructions:
+        subject: "Instructions pour réinitialiser le mot de passe"
+      unlock_instructions:
+        subject: "Instructions pour déverrouiller le compte"
+      email_changed:
+        subject: "Votre email a changé"
+      password_change:
+        subject: "Votre mot de passe a changé"
