@@ -1468,10 +1468,10 @@ textarea {
 }
 
 .message-bubble {
-  padding: 0.8rem 1.2rem;
-  border-radius: 20px;
-  max-width: 75%;
-  box-shadow: var(--shadow-subtle);
+  max-width: 90%;
+  min-width: 180px;
+  padding: 0.6rem 2rem;
+  border-radius: 18px 18px 18px 8px;
   word-break: break-word;
   overflow-wrap: break-word;
   white-space: pre-line;
