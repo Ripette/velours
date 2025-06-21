@@ -10,22 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_20_172734) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
+ActiveRecord::Schema[7.1].define(version: 2025_06_21_110544) do
   create_table "conversations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "sender_id", null: false
-    t.bigint "recipient_id", null: false
+    t.integer "sender_id", null: false
+    t.integer "recipient_id", null: false
     t.string "topic"
     t.index ["recipient_id"], name: "index_conversations_on_recipient_id"
     t.index ["sender_id"], name: "index_conversations_on_sender_id"
   end
 
   create_table "convocation_details", force: :cascade do |t|
-    t.bigint "favor_request_id", null: false
+    t.integer "favor_request_id", null: false
     t.string "location"
     t.string "timing"
     t.string "attire"
@@ -36,21 +33,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_20_172734) do
   end
 
   create_table "favor_requests", force: :cascade do |t|
-    t.bigint "sender_id", null: false
-    t.bigint "receiver_id", null: false
+    t.integer "sender_id", null: false
+    t.integer "receiver_id", null: false
     t.text "message"
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "category"
+    t.integer "conversation_id"
     t.index ["receiver_id"], name: "index_favor_requests_on_receiver_id"
     t.index ["sender_id"], name: "index_favor_requests_on_sender_id"
   end
 
   create_table "messages", force: :cascade do |t|
     t.text "content"
-    t.bigint "conversation_id", null: false
-    t.bigint "user_id", null: false
+    t.integer "conversation_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
