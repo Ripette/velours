@@ -1469,9 +1469,9 @@ textarea {
 
 .message-bubble {
   max-width: 90%;
-  min-width: 180px;
-  padding: 0.6rem 2rem;
-  border-radius: 18px 18px 18px 8px;
+  min-width: 100px;
+  padding: 0.3rem 1.2rem;
+  border-radius: 14px 14px 14px 6px;
   word-break: break-word;
   overflow-wrap: break-word;
   white-space: pre-line;
