@@ -62,8 +62,8 @@ main, .container, .content {
 
 /* Navigation - Style élégant et sobre */
 header {
-  background: #21060d;
-  box-shadow: 0 2px 12px rgba(75, 0, 17, 0.12);
+  background: transparent !important;
+  box-shadow: none !important;
   padding: 0.5rem 0;
 }
 
@@ -1357,7 +1357,7 @@ textarea {
  */
 
 .app-header {
-  background: #8B1538; /* Deep bordeaux */
+  background: transparent !important;
   padding: 1.5rem 0;
 }
 
