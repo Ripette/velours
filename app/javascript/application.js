@@ -4,8 +4,8 @@ import "controllers"
 
 // Alternative simple pour gérer les liens DELETE sans UJS complet
 document.addEventListener('turbo:load', () => {
-  // Gérer les liens avec method delete
-  document.querySelectorAll('a[data-turbo-method="delete"]').forEach(link => {
+  // Gérer les liens avec data-method delete
+  document.querySelectorAll('a[data-method="delete"]').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
 

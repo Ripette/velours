@@ -25,7 +25,7 @@
           <i class="fas fa-home"></i>
           <span class="btn-text">Accueil</span>
         <% end %>
-        <%= link_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn-luxe-primary' do %>
+        <%= link_to destroy_user_session_path, method: :delete, data: { method: :delete }, class: 'btn-luxe-primary' do %>
           <i class="fas fa-sign-out-alt"></i>
           <span class="btn-text">Déconnexion</span>
         <% end %>
