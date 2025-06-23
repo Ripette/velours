@@ -5,21 +5,28 @@
     </div>
     <div class="conversation-list">
       <% @conversations.each do |conversation| %>
-        <%= link_to conversation_path(conversation), class: "conversation-link" do %>
-          <div class="conversation-info">
-            <i class="fas fa-comments conversation-icon"></i>
-            <span>
-              <% contact = conversation.other_user(current_user) %>
-              <% prenom = contact.email.split('@').first.split('.').first.capitalize %>
-              <% if conversation.topic.present? %>
-                <%= conversation.topic %> de <strong><%= prenom %></strong>
-              <% else %>
-                Conversation avec <strong><%= prenom %></strong>
-              <% end %>
-            </span>
-          </div>
-          <span class="message-count"><%= conversation.messages.count %></span>
-        <% end %>
+        <div class="conversation-link-wrapper" style="display: flex; align-items: center; justify-content: space-between;">
+          <%= link_to conversation_path(conversation), class: "conversation-link", style: 'flex: 1 1 auto; min-width: 0;' do %>
+            <div class="conversation-info">
+              <i class="fas fa-comments conversation-icon"></i>
+              <span>
+                <% contact = conversation.other_user(current_user) %>
+                <% prenom = contact.email.split('@').first.split('.').first.capitalize %>
+                <% if conversation.topic.present? %>
+                  <%= conversation.topic %> de <strong><%= prenom %></strong>
+                <% else %>
+                  Conversation avec <strong><%= prenom %></strong>
+                <% end %>
+                <br>
+                <small style="color:#bfa; opacity:0.7; font-size:0.85em;">
+                  Débutée le <%= l(conversation.created_at, format: :short) %>
+                </small>
+              </span>
+            </div>
+            <span class="message-count"><%= conversation.messages.count %></span>
+          <% end %>
+          <%= link_to '✕', conversation_path(conversation), method: :delete, data: { confirm: 'Supprimer cette conversation ?' }, class: 'delete-conversation-btn', style: 'margin-left: 12px; color: #b3001b; font-size: 1.3em; text-decoration: none; font-weight: bold;' %>
+        </div>
       <% end %>
     </div>
   </div>

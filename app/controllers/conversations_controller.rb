@@ -16,4 +16,14 @@ class ConversationsController < ApplicationController
     @messages = @conversation.messages.order(created_at: :asc)
     @message = @conversation.messages.build
   end
+
+  def destroy
+    @conversation = Conversation.find(params[:id])
+    if @conversation.sender == current_user || @conversation.recipient == current_user
+      @conversation.destroy
+      redirect_to conversations_path, notice: 'Conversation supprimée.'
+    else
+      redirect_to conversations_path, alert: 'Suppression non autorisée.'
+    end
+  end
 end
