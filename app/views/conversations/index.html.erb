@@ -9,10 +9,12 @@
           <div class="conversation-info">
             <i class="fas fa-comments conversation-icon"></i>
             <span>
+              <% contact = conversation.other_user(current_user) %>
+              <% prenom = contact.email.split('@').first.split('.').first.capitalize %>
               <% if conversation.topic.present? %>
-                <%= conversation.topic %> de <strong><%= conversation.other_user(current_user).email.split('@').first.humanize %></strong>
+                <%= conversation.topic %> de <strong><%= prenom %></strong>
               <% else %>
-                Conversation avec <strong><%= conversation.other_user(current_user).email.split('@').first.humanize %></strong>
+                Conversation avec <strong><%= prenom %></strong>
               <% end %>
             </span>
           </div>
