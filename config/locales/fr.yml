@@ -18,3 +18,7 @@ fr:
   errors:
     messages:
       must_be_different: "ne peut pas être le même que l'expéditeur"
+
+  time:
+    formats:
+      short: "%d/%m/%Y %H:%M"
