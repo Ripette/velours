@@ -26,7 +26,10 @@
                 </small>
               </span>
             </div>
-            <span class="message-count"><%= conversation.messages.count %></span>
+            <span class="message-count" style="display: inline-flex; align-items: center; justify-content: center; width: 2.2em; height: 2.2em; border-radius: 50%; background: #a01a3a; color: #fff; font-weight: bold; font-size: 1.1em; margin-left: 1em;">
+              <i class="fas fa-envelope" style="margin-right: 0.3em; font-size: 1em;"></i>
+              <span><%= conversation.messages.count %></span>
+            </span>
           <% end %>
           <%= link_to '✕', conversation_path(conversation), method: :delete, data: { confirm: 'Supprimer cette conversation ?' }, class: 'delete-conversation-btn', style: 'margin-left: 12px; color: #b3001b; font-size: 1.3em; text-decoration: none; font-weight: bold;' %>
         </div>
