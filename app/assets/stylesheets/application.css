@@ -493,17 +493,7 @@ textarea {
 }
 
 .auth-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg,
-    var(--velours-accent) 0%,
-    var(--velours-gold) 50%,
-    var(--velours-accent) 100%);
-  border-radius: 25px 25px 0 0;
+  display: none !important;
 }
 
 .auth-title {
