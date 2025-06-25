@@ -1484,9 +1484,9 @@ textarea {
   align-self: flex-start;
 }
 .chat-message.is-partner .message-bubble {
-  background: rgba(255, 255, 255, 0.1);
-  color: #eee;
-  border-bottom-left-radius: 5px;
+  background: var(--velours-gold);
+  color: #2A0F0F;
+  border-bottom-left-radius: 4px;
 }
 
 .chat-form-container {
@@ -1872,8 +1872,8 @@ textarea {
 }
 
 .chat-message.is-partner .message-bubble {
-  background-color: #495057; /* A soft, dark grey */
-  color: #fff;
+  background-color: var(--velours-gold);
+  color: #2A0F0F;
   border-bottom-left-radius: 4px;
 }
 
