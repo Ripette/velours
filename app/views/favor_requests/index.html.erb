@@ -98,7 +98,9 @@
                     </p>
                   <% end %>
                   <% if notification.conversation.present? %>
-                    <div class="request-message" style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1em 1.5em; margin-bottom:0.7em;">
+                    <div class="request-message" style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1em 1.5em; margin-bottom:0.7em; color:#8B1538; font-size:1.1em;">
+                      <% prenom = (notification.receiver == current_user ? notification.sender : notification.receiver).email.split('@').first.capitalize %>
+                      <strong><%= prenom %></strong><br>
                       <strong>Catégorie :</strong> <%= notification.category.humanize %><br>
                       <% if notification.convocation_detail.present? %>
                         <strong>Lieu :</strong> <%= notification.convocation_detail.location %><br>
@@ -107,10 +109,12 @@
                         <strong>Mood :</strong> <%= notification.convocation_detail.mood %><br>
                       <% end %>
                       <strong>Détails :</strong> <%= notification.message %><br>
-                      <%= link_to "Voir la conversation", conversation_path(notification.conversation), class: "btn-luxe-secondary", style: "margin-top: 0.5em; display:inline-block;" %>
+                      <%= link_to "Voir la conversation", conversation_path(notification.conversation), class: "btn-luxe-secondary", style: "margin-top: 0.5em; display:inline-block; color:#8B1538; border-color:#8B1538;" %>
                     </div>
                   <% else %>
-                    <div class="request-message" style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1em 1.5em; margin-bottom:0.7em;">
+                    <div class="request-message" style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1em 1.5em; margin-bottom:0.7em; color:#8B1538; font-size:1.1em;">
+                      <% prenom = (notification.receiver == current_user ? notification.sender : notification.receiver).email.split('@').first.capitalize %>
+                      <strong><%= prenom %></strong><br>
                       <strong>Catégorie :</strong> <%= notification.category.humanize %><br>
                       <% if notification.convocation_detail.present? %>
                         <strong>Lieu :</strong> <%= notification.convocation_detail.location %><br>
