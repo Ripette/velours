@@ -84,7 +84,7 @@
         <ul class="request-list">
           <% if @notifications.any? %>
             <% @notifications.each do |notification| %>
-              <li class="request-item" style="display: flex; align-items: flex-start; justify-content: space-between;">
+              <li class="request-item" id="notification-<%= notification.id %>" style="display: flex; align-items: flex-start; justify-content: space-between;">
                 <div class="request-info" style="flex:1;">
                   <% if notification.sender == current_user %>
                     <p class="request-meta">
@@ -129,7 +129,7 @@
                   <% end %>
                 </div>
                 <div class="request-actions" style="margin-left:1em;">
-                  <%= button_to '✕', favor_request_path(notification), method: :delete, data: { confirm: 'Supprimer cette notification ?' }, class: 'delete-notification-btn', form: { style: 'display:inline;' } %>
+                  <%= link_to '✕', favor_request_path(notification), method: :delete, remote: true, data: { confirm: 'Supprimer cette notification ?', notification_id: notification.id }, class: 'delete-notification-link', style: 'color:#8B1538; font-size:1.5em; text-decoration:none; border:none; background:none; cursor:pointer; padding:0; margin:0;' %>
                 </div>
               </li>
             <% end %>

@@ -1,6 +1,6 @@
 class FavorRequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_favor_request, only: [:show, :accept, :decline]
+  before_action :set_favor_request, only: [:show, :accept, :decline, :destroy]
   before_action :ensure_partner_setup, only: [:index, :new, :create]
   layout 'setup', only: [:setup_partner]
 
@@ -128,6 +128,16 @@ class FavorRequestsController < ApplicationController
       redirect_to favor_requests_path, notice: "Vous avez bien été déconnecté de votre partenaire."
     else
       redirect_to favor_requests_path, alert: "Aucun partenaire à déconnecter."
+    end
+  end
+
+  def destroy
+    @favor_request.destroy
+    respond_to do |format|
+      format.html { redirect_to favor_requests_path, notice: 'Notification supprimée.' }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("notification-#{@favor_request.id}") }
+      format.js { render inline: "document.getElementById('notification-#{@favor_request.id}').remove();" }
+      format.json { head :no_content }
     end
   end
 

@@ -31,3 +31,12 @@ document.addEventListener('turbo:load', () => {
     });
   });
 });
+
+document.addEventListener('ajax:success', function(event) {
+  const link = event.target;
+  if (link.classList.contains('delete-notification-link')) {
+    const notifId = link.dataset.notificationId;
+    const notifElem = document.getElementById('notification-' + notifId);
+    if (notifElem) notifElem.remove();
+  }
+});
