@@ -16,9 +16,9 @@
                 <% contact = conversation.other_user(current_user) %>
                 <% prenom = contact.email.split('@').first.split('.').first.capitalize %>
                 <% if conversation.topic.present? %>
-                  <%= conversation.topic %> de <strong><%= prenom %></strong>
+                  <%= conversation.topic %> de <strong style="color:#222;"> <%= prenom %> </strong>
                 <% else %>
-                  Conversation avec <strong><%= prenom %></strong>
+                  Conversation avec <strong style="color:#222;"> <%= prenom %> </strong>
                 <% end %>
                 <br>
                 <small style="color:#bfa; opacity:0.7; font-size:0.85em;">
