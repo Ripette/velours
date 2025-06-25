@@ -97,7 +97,11 @@
                       <strong><%= notification.sender.email.split('@').first.humanize %></strong>
                     </p>
                   <% end %>
-                  <p class="request-message"><%= link_to format_favor_request_details(notification), conversation_path(notification.conversation) %></p>
+                  <% if notification.conversation.present? %>
+                    <p class="request-message"><%= link_to format_favor_request_details(notification), conversation_path(notification.conversation) %></p>
+                  <% else %>
+                    <p class="request-message"><%= format_favor_request_details(notification) %></p>
+                  <% end %>
                 </div>
 
                 <div class="request-actions">
