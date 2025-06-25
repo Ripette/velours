@@ -98,9 +98,28 @@
                     </p>
                   <% end %>
                   <% if notification.conversation.present? %>
-                    <p class="request-message"><%= link_to format_favor_request_details(notification), conversation_path(notification.conversation) %></p>
+                    <div class="request-message" style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1em 1.5em; margin-bottom:0.7em;">
+                      <strong>Catégorie :</strong> <%= notification.category.humanize %><br>
+                      <% if notification.convocation_detail.present? %>
+                        <strong>Lieu :</strong> <%= notification.convocation_detail.location %><br>
+                        <strong>Quand :</strong> <%= notification.convocation_detail.timing %><br>
+                        <strong>Tenue :</strong> <%= notification.convocation_detail.attire %><br>
+                        <strong>Mood :</strong> <%= notification.convocation_detail.mood %><br>
+                      <% end %>
+                      <strong>Détails :</strong> <%= notification.message %><br>
+                      <%= link_to "Voir la conversation", conversation_path(notification.conversation), class: "btn-luxe-secondary", style: "margin-top: 0.5em; display:inline-block;" %>
+                    </div>
                   <% else %>
-                    <p class="request-message"><%= format_favor_request_details(notification) %></p>
+                    <div class="request-message" style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1em 1.5em; margin-bottom:0.7em;">
+                      <strong>Catégorie :</strong> <%= notification.category.humanize %><br>
+                      <% if notification.convocation_detail.present? %>
+                        <strong>Lieu :</strong> <%= notification.convocation_detail.location %><br>
+                        <strong>Quand :</strong> <%= notification.convocation_detail.timing %><br>
+                        <strong>Tenue :</strong> <%= notification.convocation_detail.attire %><br>
+                        <strong>Mood :</strong> <%= notification.convocation_detail.mood %><br>
+                      <% end %>
+                      <strong>Détails :</strong> <%= notification.message %>
+                    </div>
                   <% end %>
                 </div>
 
