@@ -84,8 +84,8 @@
         <ul class="request-list">
           <% if @notifications.any? %>
             <% @notifications.each do |notification| %>
-              <li class="request-item">
-                <div class="request-info">
+              <li class="request-item" style="display: flex; align-items: flex-start; justify-content: space-between;">
+                <div class="request-info" style="flex:1;">
                   <% if notification.sender == current_user %>
                     <p class="request-meta">
                       <span class="request-direction">Envoyée à</span>
@@ -128,17 +128,8 @@
                     </div>
                   <% end %>
                 </div>
-
-                <div class="request-actions">
-                  <span class="request-status status-<%= notification.status %>">
-                    <%= notification.status&.humanize %>
-                  </span>
-                  <% if notification.receiver == current_user && notification.pending? %>
-                    <div class="request-buttons">
-                      <%= button_to "Accepter", accept_favor_request_path(notification), method: :patch, class: "btn-accept" %>
-                      <%= button_to "Refuser", decline_favor_request_path(notification), method: :patch, class: "btn-decline" %>
-                    </div>
-                  <% end %>
+                <div class="request-actions" style="margin-left:1em;">
+                  <%= button_to '✕', favor_request_path(notification), method: :delete, data: { confirm: 'Supprimer cette notification ?' }, class: 'delete-notification-btn', form: { style: 'display:inline;' } %>
                 </div>
               </li>
             <% end %>
