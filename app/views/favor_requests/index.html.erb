@@ -104,7 +104,6 @@
                   <% if notification.conversation.present? %>
                     <div class="request-message" style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1em 1.5em; margin-bottom:0.7em; color:#8B1538; font-size:1.1em;">
                       <% prenom = (notification.receiver == current_user ? notification.sender : notification.receiver).email.split('@').first.split('.').first.capitalize %>
-                      <span style="color:#222; font-weight:600; font-size:1.2em;"> <%= prenom %> </span><br>
                       <strong>Catégorie :</strong> <%= notification.category.humanize %><br>
                       <% if notification.convocation_detail.present? %>
                         <strong>Lieu :</strong> <%= notification.convocation_detail.location %><br>
@@ -118,7 +117,6 @@
                   <% else %>
                     <div class="request-message" style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1em 1.5em; margin-bottom:0.7em; color:#8B1538; font-size:1.1em;">
                       <% prenom = (notification.receiver == current_user ? notification.sender : notification.receiver).email.split('@').first.split('.').first.capitalize %>
-                      <span style="color:#222; font-weight:600; font-size:1.2em;"> <%= prenom %> </span><br>
                       <strong>Catégorie :</strong> <%= notification.category.humanize %><br>
                       <% if notification.convocation_detail.present? %>
                         <strong>Lieu :</strong> <%= notification.convocation_detail.location %><br>
