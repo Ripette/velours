@@ -4,6 +4,7 @@ fr:
       not_found: "n'a pas été trouvé"
       not_saved: "n'a pas pu être enregistré"
       blank: "doit être rempli(e)"
+      confirmation: "ne correspond pas à la confirmation"
   devise:
     failure:
       already_authenticated: "Vous êtes déjà connecté."
