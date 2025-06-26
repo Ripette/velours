@@ -106,4 +106,6 @@ Rails.application.configure do
     authentication: :plain,
     enable_starttls_auto: true
   }
+
+  config.action_mailer.default_options = { from: 'thomas.ripetti@gmail.com' }
 end
