@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <%= javascript_importmap_tags %>
 
+    <!-- Log de debug pour vérifier chargement du script OneSignal -->
+    <script>console.log('OneSignal script loaded - HEAD');</script>
     <!-- OneSignal pour PWA iOS : version service worker -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.js" async></script>
     <script>
@@ -96,6 +98,29 @@
           debugSpan.style.color = '#b22222';
           notifBtn.parentNode.insertBefore(debugSpan, notifBtn.nextSibling);
 
+          // Retry pour attendre que OneSignal soit chargé avant d'activer le bouton
+          function waitForOneSignal(readyCallback) {
+            let tries = 0;
+            function check() {
+              if (window.OneSignal && OneSignal.getNotificationPermission) {
+                readyCallback();
+              } else if (tries < 15) { // attend jusqu'à 15s
+                tries++;
+                debugSpan.textContent = 'Attente du chargement OneSignal ('+tries+')...';
+                setTimeout(check, 1000);
+              } else {
+                debugSpan.textContent = 'Erreur: OneSignal ne se charge pas.';
+              }
+            }
+            check();
+          }
+
+          waitForOneSignal(function() {
+            updateDebugPermission();
+            notifBtn.disabled = false;
+            notifBtn.style.opacity = 1;
+          });
+
           function updateDebugPermission() {
             if (window.OneSignal && OneSignal.getNotificationPermission) {
               OneSignal.getNotificationPermission().then(function(permission) {
@@ -112,7 +137,9 @@
               console.warn('OneSignal n\'est pas encore chargé');
             }
           }
-          updateDebugPermission();
+
+          notifBtn.disabled = true;
+          notifBtn.style.opacity = 0.5;
 
           notifBtn.addEventListener('click', function() {
             console.log('Bouton notifications cliqué');
