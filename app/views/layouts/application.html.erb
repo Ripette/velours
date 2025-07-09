@@ -18,6 +18,7 @@
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
+        console.log('OneSignalDeferred callback appelé');
         await OneSignal.init({
           appId: "12a609ee-318e-4423-8e34-062dc14bb6e9",
           safari_web_id: "web.onesignal.auto.570f8921-edd7-49b2-93d5-7301d9209087",
@@ -29,6 +30,7 @@
   </head>
 
   <body>
+    <script>console.log('HTML body loaded');</script>
     <%= render 'layouts/header' %>
 
     <button id="enable-notifications-btn" style="position:fixed; bottom:2em; left:50%; transform:translateX(-50%); z-index:9999; background:#D4A574; color:#8B1538; border:none; border-radius:18px; padding:0.5em 1.2em; font-size:0.98em; font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.12); display:none;">Activer les notifications 🔔</button>
@@ -98,6 +100,16 @@
           debugSpan.style.color = '#b22222';
           notifBtn.parentNode.insertBefore(debugSpan, notifBtn.nextSibling);
 
+          // Message d'info pour iOS si push non supporté
+          function isIOS() {
+            return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+          }
+          if (isIOS() && !('Notification' in window)) {
+            debugSpan.textContent = 'Notifications push non supportées sur ce navigateur iOS.';
+            notifBtn.style.display = 'none';
+            return;
+          }
+
           // Retry pour attendre que OneSignal soit chargé avant d'activer le bouton
           function waitForOneSignal(readyCallback) {
             let tries = 0;
@@ -109,7 +121,8 @@
                 debugSpan.textContent = 'Attente du chargement OneSignal ('+tries+')...';
                 setTimeout(check, 1000);
               } else {
-                debugSpan.textContent = 'Erreur: OneSignal ne se charge pas.';
+                debugSpan.textContent = 'Erreur: OneSignal ne se charge pas. Vérifiez votre connexion ou les restrictions iOS.';
+                notifBtn.style.display = 'none';
               }
             }
             check();
