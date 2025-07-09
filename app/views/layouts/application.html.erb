@@ -100,15 +100,12 @@
           debugSpan.style.color = '#b22222';
           notifBtn.parentNode.insertBefore(debugSpan, notifBtn.nextSibling);
 
-          // Message d'info pour iOS si push non supporté
-          function isIOS() {
-            return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-          }
-          if (isIOS() && !('Notification' in window)) {
-            debugSpan.textContent = 'Notifications push non supportées sur ce navigateur iOS.';
-            notifBtn.style.display = 'none';
-            return;
-          }
+          // Message d'info pour iOS si push non supporté (désactivé pour debug)
+          // if (isIOS() && !('Notification' in window)) {
+          //   debugSpan.textContent = 'Notifications push non supportées sur ce navigateur iOS.';
+          //   notifBtn.style.display = 'none';
+          //   return;
+          // }
 
           // Retry pour attendre que OneSignal soit chargé avant d'activer le bouton
           function waitForOneSignal(readyCallback) {
