@@ -88,7 +88,22 @@
         }
         const notifBtn = document.getElementById('enable-notifications-btn');
         if (notifBtn && isMobile()) {
-          notifBtn.style.display = 'block';
+          // Vérifie la permission OneSignal au chargement
+          function hideNotifBtnIfPermission() {
+            if (window.OneSignal && OneSignal.getNotificationPermission) {
+              OneSignal.getNotificationPermission().then(function(permission) {
+                if (permission === 'granted' || permission === 'denied') {
+                  notifBtn.style.display = 'none';
+                } else {
+                  notifBtn.style.display = 'block';
+                }
+              });
+            } else {
+              notifBtn.style.display = 'block';
+            }
+          }
+          hideNotifBtnIfPermission();
+
           notifBtn.addEventListener('click', function() {
             console.log('Bouton notifications cliqué');
             if (window.OneSignal) {
@@ -105,14 +120,20 @@
               alert('Erreur : OneSignal n\'est pas encore chargé. Réessaie dans quelques secondes.');
             }
           });
-
-          // Cache le bouton dès que l’utilisateur accepte ou refuse le prompt
-          if (window.OneSignal) {
-            OneSignal.on('notificationPermissionChange', function(permission) {
-              notifBtn.style.display = 'none';
-            });
-          }
         }
+
+        // Attache l’événement après l’initialisation OneSignal
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(function(OneSignal) {
+          if (isMobile()) {
+            var notifBtn = document.getElementById('enable-notifications-btn');
+            if (notifBtn) {
+              OneSignal.on('notificationPermissionChange', function(permission) {
+                notifBtn.style.display = 'none';
+              });
+            }
+          }
+        });
       });
     </script>
   </body>
