@@ -11,16 +11,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <%= javascript_importmap_tags %>
 
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"></script>
+    <!-- OneSignal pour PWA iOS : version service worker -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.js" async></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
           appId: "12a609ee-318e-4423-8e34-062dc14bb6e9",
           safari_web_id: "web.onesignal.auto.570f8921-edd7-49b2-93d5-7301d9209087",
-          notifyButton: {
-            enable: true,
-          },
+          notifyButton: { enable: true },
+          serviceWorkerPath: "OneSignalSDKWorker.js"
         });
       });
     </script>
