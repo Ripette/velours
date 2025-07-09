@@ -88,10 +88,18 @@
         }
         const notifBtn = document.getElementById('enable-notifications-btn');
         if (notifBtn && isMobile()) {
-          // Vérifie la permission OneSignal au chargement
-          function hideNotifBtnIfPermission() {
+          // Ajoute un span pour afficher le statut de permission (debug)
+          let debugSpan = document.createElement('span');
+          debugSpan.id = 'notif-permission-debug';
+          debugSpan.style.marginLeft = '8px';
+          debugSpan.style.fontSize = '12px';
+          debugSpan.style.color = '#b22222';
+          notifBtn.parentNode.insertBefore(debugSpan, notifBtn.nextSibling);
+
+          function updateDebugPermission() {
             if (window.OneSignal && OneSignal.getNotificationPermission) {
               OneSignal.getNotificationPermission().then(function(permission) {
+                debugSpan.textContent = 'Permission: ' + permission;
                 if (permission === 'granted' || permission === 'denied') {
                   notifBtn.style.display = 'none';
                 } else {
@@ -99,10 +107,11 @@
                 }
               });
             } else {
+              debugSpan.textContent = 'Permission: inconnu';
               notifBtn.style.display = 'block';
             }
           }
-          hideNotifBtnIfPermission();
+          updateDebugPermission();
 
           notifBtn.addEventListener('click', function() {
             console.log('Bouton notifications cliqué');
@@ -119,6 +128,9 @@
             } else {
               alert('Erreur : OneSignal n\'est pas encore chargé. Réessaie dans quelques secondes.');
             }
+            // Force la disparition du bouton après clic (UX radicale)
+            setTimeout(updateDebugPermission, 2000); // Vérifie la permission après 2s
+            notifBtn.style.display = 'none'; // Disparition immédiate
           });
         }
 
@@ -127,9 +139,11 @@
         OneSignalDeferred.push(function(OneSignal) {
           if (isMobile()) {
             var notifBtn = document.getElementById('enable-notifications-btn');
+            var debugSpan = document.getElementById('notif-permission-debug');
             if (notifBtn) {
               OneSignal.on('notificationPermissionChange', function(permission) {
                 notifBtn.style.display = 'none';
+                if (debugSpan) debugSpan.textContent = 'Permission: ' + permission;
               });
             }
           }
