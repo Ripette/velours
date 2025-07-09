@@ -105,6 +105,13 @@
               alert('Erreur : OneSignal n\'est pas encore chargé. Réessaie dans quelques secondes.');
             }
           });
+
+          // Cache le bouton dès que l’utilisateur accepte ou refuse le prompt
+          if (window.OneSignal) {
+            OneSignal.on('notificationPermissionChange', function(permission) {
+              notifBtn.style.display = 'none';
+            });
+          }
         }
       });
     </script>
