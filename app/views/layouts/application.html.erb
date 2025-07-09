@@ -29,6 +29,8 @@
   <body>
     <%= render 'layouts/header' %>
 
+    <button id="enable-notifications-btn" style="position:fixed; bottom:2.5em; left:50%; transform:translateX(-50%); z-index:9999; background:#D4A574; color:#8B1538; border:none; border-radius:30px; padding:1em 2em; font-size:1.1em; font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.12); display:none;">Activer les notifications 🔔</button>
+
     <div id="flash-container" class="flash-container">
       <% flash.each do |type, message| %>
         <div class="flash-message <%= type %>">
@@ -77,6 +79,20 @@
         if (scenarioForm) {
           scenarioForm.addEventListener('submit', function() {
             closeModal();
+          });
+        }
+
+        // Affiche le bouton d’activation OneSignal sur mobile si la cloche n’est pas visible
+        function isMobile() {
+          return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        }
+        const notifBtn = document.getElementById('enable-notifications-btn');
+        if (notifBtn && isMobile()) {
+          notifBtn.style.display = 'block';
+          notifBtn.addEventListener('click', function() {
+            if (window.OneSignal && OneSignal.showSlidedownPrompt) {
+              OneSignal.showSlidedownPrompt();
+            }
           });
         }
       });
