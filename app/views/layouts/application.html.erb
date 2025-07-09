@@ -107,8 +107,9 @@
                 }
               });
             } else {
-              debugSpan.textContent = 'Permission: inconnu';
+              debugSpan.textContent = 'Permission: inconnu (OneSignal non chargé)';
               notifBtn.style.display = 'block';
+              console.warn('OneSignal n\'est pas encore chargé');
             }
           }
           updateDebugPermission();
@@ -128,9 +129,22 @@
             } else {
               alert('Erreur : OneSignal n\'est pas encore chargé. Réessaie dans quelques secondes.');
             }
-            // Force la disparition du bouton après clic (UX radicale)
-            setTimeout(updateDebugPermission, 2000); // Vérifie la permission après 2s
             notifBtn.style.display = 'none'; // Disparition immédiate
+
+            // Retry toutes les 2s pendant 10s max
+            let retryCount = 0;
+            function retryPermissionCheck() {
+              retryCount++;
+              updateDebugPermission();
+              if (retryCount < 5) { // 5 fois toutes les 2s = 10s
+                if (debugSpan.textContent.includes('inconnu')) {
+                  setTimeout(retryPermissionCheck, 2000);
+                }
+              } else if (debugSpan.textContent.includes('inconnu')) {
+                debugSpan.textContent = 'Erreur: OneSignal ne répond pas.';
+              }
+            }
+            setTimeout(retryPermissionCheck, 2000);
           });
         }
 
