@@ -33,7 +33,9 @@
     <script>console.log('HTML body loaded');</script>
     <%= render 'layouts/header' %>
 
-    <button id="enable-notifications-btn" style="position:fixed; bottom:2em; left:50%; transform:translateX(-50%); z-index:9999; background:#D4A574; color:#8B1538; border:none; border-radius:18px; padding:0.5em 1.2em; font-size:0.98em; font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.12); display:none;">Activer les notifications 🔔</button>
+    <div id="notif-debug-message" style="position:fixed;top:0;left:0;width:100vw;z-index:10000;background:#fff3cd;color:#8B1538;font-weight:bold;padding:6px 0;text-align:center;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">Chargement JS…</div>
+
+    <button id="enable-notifications-btn" style="position:fixed; bottom:2em; left:50%; transform:translateX(-50%); z-index:9999; background:#D4A574; color:#8B1538; border:none; border-radius:18px; padding:0.5em 1.2em; font-size:0.98em; font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.12); display:block;">Activer les notifications 🔔</button>
 
     <div id="flash-container" class="flash-container">
       <% flash.each do |type, message| %>
@@ -51,6 +53,10 @@
 
     <script>
       document.addEventListener('turbo:load', () => {
+        // --- Debug permanent en haut de page ---
+        const notifDebug = document.getElementById('notif-debug-message');
+        if (notifDebug) notifDebug.textContent = 'JS exécuté, attente OneSignal…';
+
         // --- Flash message handler ---
         const flashMessages = document.querySelectorAll('.flash-message');
 
@@ -92,6 +98,7 @@
         }
         const notifBtn = document.getElementById('enable-notifications-btn');
         if (notifBtn && isMobile()) {
+          if (notifDebug) notifDebug.textContent = 'JS mobile détecté, attente OneSignal…';
           // Ajoute un span pour afficher le statut de permission (debug)
           let debugSpan = document.createElement('span');
           debugSpan.id = 'notif-permission-debug';
@@ -129,6 +136,7 @@
             updateDebugPermission();
             notifBtn.disabled = false;
             notifBtn.style.opacity = 1;
+            if (notifDebug) notifDebug.textContent = 'OneSignal chargé, bouton notifications actif.';
           });
 
           function updateDebugPermission() {
@@ -152,7 +160,7 @@
           notifBtn.style.opacity = 0.5;
 
           notifBtn.addEventListener('click', function() {
-            console.log('Bouton notifications cliqué');
+            if (notifDebug) notifDebug.textContent = 'Bouton notifications cliqué';
             if (window.OneSignal) {
               if (OneSignal.showSlidedownPrompt) {
                 console.log('OneSignal.showSlidedownPrompt appelé');
