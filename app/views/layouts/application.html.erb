@@ -35,7 +35,8 @@
 
     <div id="notif-debug-message" style="position:fixed;top:0;left:0;width:100vw;z-index:10000;background:#fff3cd;color:#8B1538;font-weight:bold;padding:6px 0;text-align:center;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">Chargement JS…</div>
 
-    <button id="enable-notifications-btn" style="position:fixed; top:1.5em; left:50%; transform:translateX(-50%); z-index:99999; background:#ffeb3b; color:#d32f2f; border:3px solid #d32f2f; border-radius:22px; padding:0.7em 2em; font-size:1.1em; font-weight:700; box-shadow:0 4px 18px rgba(0,0,0,0.18); display:block; opacity:1 !important; pointer-events:auto !important;" disabled="false">🔔 Activer les notifications (DEBUG)</button>
+    <button id="enable-notifications-btn" style="position:fixed; bottom:2em; left:50%; transform:translateX(-50%); z-index:2147483647 !important; background:#ffeb3b !important; color:#d32f2f !important; border:5px solid red !important; border-radius:22px; padding:0.7em 2em; font-size:1.1em; font-weight:700; box-shadow:0 4px 18px rgba(0,0,0,0.18); display:block !important; opacity:1 !important; pointer-events:auto !important;">🔔 Activer les notifications (DEBUG)</button>
+    <div id="notif-debug-iphone" style="position:fixed; bottom:0.5em; left:50%; transform:translateX(-50%); z-index:2147483647; background:#fff; color:#d32f2f; font-weight:bold; padding:0.5em 1.5em; border-radius:16px; font-size:1em; box-shadow:0 2px 8px rgba(0,0,0,0.08);">Debug iPhone : le bouton est-il visible ? Clique dessus et regarde la console JS.</div>
 
     <div id="flash-container" class="flash-container">
       <% flash.each do |type, message| %>
@@ -98,63 +99,30 @@
           return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         }
         const notifBtn = document.getElementById('enable-notifications-btn');
-        if (notifBtn && isMobile()) {
-          notifBtn.disabled = false;
+        const notifDebugIphone = document.getElementById('notif-debug-iphone');
+        if (notifBtn) {
           notifBtn.style.opacity = '1';
           notifBtn.style.pointerEvents = 'auto';
+          notifBtn.style.display = 'block';
           notifBtn.style.background = '#ffeb3b';
           notifBtn.style.color = '#d32f2f';
-          notifBtn.style.border = '3px solid #d32f2f';
-          notifBtn.style.zIndex = '99999';
-          notifBtn.style.top = '1.5em';
-          notifBtn.style.bottom = '';
-          notifBtn.style.fontWeight = '700';
-          notifBtn.style.fontSize = '1.1em';
-          notifBtn.style.padding = '0.7em 2em';
-          notifBtn.style.borderRadius = '22px';
-          notifBtn.style.boxShadow = '0 4px 18px rgba(0,0,0,0.18)';
-          if (notifDebug) notifDebug.textContent = 'Bouton DEBUG toujours actif (z-index max)';
-          console.log('Bouton DEBUG forcé actif');
+          notifBtn.style.zIndex = '2147483647';
+          notifBtn.style.border = '5px solid red';
+          notifBtn.style.outline = '4px solid #d32f2f';
+          notifBtn.disabled = false;
+          if (notifDebugIphone) notifDebugIphone.textContent = '[DEBUG] Bouton visible, prêt à cliquer.';
+          console.log('[DEBUG] Bouton notifications détecté et forcé visible');
 
           // Ajoute un span pour afficher le statut de permission (debug)
-          let debugSpan = document.createElement('span');
-          debugSpan.id = 'notif-permission-debug';
-          debugSpan.style.marginLeft = '8px';
-          debugSpan.style.fontSize = '12px';
-          debugSpan.style.color = '#b22222';
-          notifBtn.parentNode.insertBefore(debugSpan, notifBtn.nextSibling);
-
-          // Message d'info pour iOS si push non supporté (désactivé pour debug)
-          // if (isIOS() && !('Notification' in window)) {
-          //   debugSpan.textContent = 'Notifications push non supportées sur ce navigateur iOS.';
-          //   notifBtn.style.display = 'none';
-          //   return;
-          // }
-
-          // Retry pour attendre que OneSignal soit chargé avant d'activer le bouton
-          function waitForOneSignal(readyCallback) {
-            let tries = 0;
-            function check() {
-              if (window.OneSignal && OneSignal.getNotificationPermission) {
-                readyCallback();
-              } else if (tries < 15) { // attend jusqu'à 15s
-                tries++;
-                debugSpan.textContent = 'Attente du chargement OneSignal ('+tries+')...';
-                setTimeout(check, 1000);
-              } else {
-                debugSpan.textContent = 'Erreur: OneSignal ne se charge pas. Vérifiez votre connexion ou les restrictions iOS.';
-                notifBtn.style.display = 'none';
-              }
-            }
-            check();
+          let debugSpan = document.getElementById('notif-permission-debug');
+          if (!debugSpan) {
+            debugSpan = document.createElement('span');
+            debugSpan.id = 'notif-permission-debug';
+            debugSpan.style.marginLeft = '8px';
+            debugSpan.style.fontSize = '12px';
+            debugSpan.style.color = '#b22222';
+            notifBtn.parentNode.insertBefore(debugSpan, notifBtn.nextSibling);
           }
-
-          waitForOneSignal(function() {
-            updateDebugPermission();
-            notifBtn.disabled = false;
-            notifBtn.style.opacity = 1;
-            if (notifDebug) notifDebug.textContent = 'OneSignal chargé, bouton notifications actif.';
-          });
 
           function updateDebugPermission() {
             if (window.OneSignal && OneSignal.getNotificationPermission) {
@@ -162,56 +130,50 @@
                 debugSpan.textContent = 'Permission: ' + permission;
                 if (permission === 'granted' || permission === 'denied') {
                   notifBtn.style.display = 'none';
+                  if (notifDebugIphone) notifDebugIphone.textContent = '[DEBUG] Permission: ' + permission + ' (bouton caché)';
                 } else {
                   notifBtn.style.display = 'block';
+                  if (notifDebugIphone) notifDebugIphone.textContent = '[DEBUG] Permission: ' + permission + ' (bouton visible)';
                 }
               });
             } else {
               debugSpan.textContent = 'Permission: inconnu (OneSignal non chargé)';
               notifBtn.style.display = 'block';
-              console.warn('OneSignal n\'est pas encore chargé');
+              if (notifDebugIphone) notifDebugIphone.textContent = '[DEBUG] OneSignal non chargé.';
             }
           }
-
-          notifBtn.disabled = true;
-          notifBtn.style.opacity = 0.5;
 
           notifBtn.addEventListener('click', function() {
             if (notifDebug) notifDebug.textContent = 'Bouton notifications cliqué (handler JS appelé)';
-            console.log('Bouton notifications cliqué (handler JS appelé)');
-            let onesignalStatus = 'OneSignal: ' + (window.OneSignal ? 'présent' : 'absent');
-            let permissionStatus = 'Permission: inconnu';
-            if (window.OneSignal && OneSignal.getNotificationPermission) {
-              OneSignal.getNotificationPermission().then(function(permission) {
-                permissionStatus = 'Permission: ' + permission;
-                alert(onesignalStatus + '\n' + permissionStatus);
-                if (notifDebug) notifDebug.textContent = 'Alerte affichée : ' + onesignalStatus + ' / ' + permissionStatus;
-                console.log('Alerte affichée :', onesignalStatus, permissionStatus);
-              });
+            if (notifDebugIphone) notifDebugIphone.textContent = '[DEBUG] Clic sur bouton notifications';
+            console.log('[DEBUG] Clic sur bouton notifications');
+            if (window.OneSignal && OneSignal.showSlidedownPrompt) {
+              OneSignal.showSlidedownPrompt();
+              if (notifDebug) notifDebug.textContent = 'Demande de permission OneSignal envoyée.';
+              if (notifDebugIphone) notifDebugIphone.textContent = '[DEBUG] Demande de permission OneSignal envoyée.';
             } else {
-              alert(onesignalStatus + '\n' + permissionStatus);
-              if (notifDebug) notifDebug.textContent = 'Alerte affichée : ' + onesignalStatus + ' / ' + permissionStatus;
-              console.log('Alerte affichée :', onesignalStatus, permissionStatus);
+              if (notifDebug) notifDebug.textContent = 'Erreur: OneSignal non chargé.';
+              if (notifDebugIphone) notifDebugIphone.textContent = '[DEBUG] Erreur: OneSignal non chargé.';
+              alert('Erreur: OneSignal non chargé.');
             }
-            // Ne cache plus le bouton après clic
+          });
+
+          updateDebugPermission();
+
+          window.OneSignalDeferred = window.OneSignalDeferred || [];
+          OneSignalDeferred.push(function(OneSignal) {
+            OneSignal.on('notificationPermissionChange', function(permission) {
+              updateDebugPermission();
+            });
           });
         }
-
-        // Attache l’événement après l’initialisation OneSignal
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(function(OneSignal) {
-          if (isMobile()) {
-            var notifBtn = document.getElementById('enable-notifications-btn');
-            var debugSpan = document.getElementById('notif-permission-debug');
-            if (notifBtn) {
-              OneSignal.on('notificationPermissionChange', function(permission) {
-                notifBtn.style.display = 'none';
-                if (debugSpan) debugSpan.textContent = 'Permission: ' + permission;
-              });
-            }
-          }
-        });
       });
+    </script>
+    <button id="test-iphone-btn" style="position:fixed; bottom:5em; left:50%; transform:translateX(-50%); z-index:2147483647 !important; background:#2ecc40 !important; color:#fff !important; border:4px solid #111 !important; border-radius:22px; padding:1em 2.5em; font-size:1.3em; font-weight:900; box-shadow:0 4px 18px rgba(0,0,0,0.18); display:block !important; opacity:1 !important; pointer-events:auto !important;">BOUTON TEST IPHONE</button>
+    <script>
+      document.getElementById('test-iphone-btn').onclick = function() {
+        alert('BOUTON TEST CLIQUÉ');
+      };
     </script>
   </body>
 </html>
