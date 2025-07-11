@@ -138,6 +138,9 @@
   <body>
     <%= render 'layouts/header' %>
 
+    <!-- Message d'aide pour notifications -->
+    <div id="notif-help-message" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9998; background: #fff3cd; color: #b22222; border: 2px solid #b22222; border-radius: 18px; padding: 10px 22px; font-size: 15px; font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: none; text-align: center; max-width: 90vw;"></div>
+
     <!-- Bouton manuel pour activer les notifications -->
     <button id="manual-notif-btn"
             onclick="requestNotifications()"
@@ -169,6 +172,41 @@
     <script>
       document.addEventListener('turbo:load', () => {
         console.log('Page chargée, vérification OneSignal...');
+
+        // Détection du support Web Push
+        const notifBtn = document.getElementById('manual-notif-btn');
+        const notifHelp = document.getElementById('notif-help-message');
+        function showHelp(msg) {
+          notifHelp.textContent = msg;
+          notifHelp.style.display = 'block';
+          notifBtn.style.display = 'none';
+        }
+        function hideHelp() {
+          notifHelp.style.display = 'none';
+        }
+        // Test du support
+        if (!('Notification' in window)) {
+          showHelp("Votre navigateur ne supporte pas les notifications push.");
+        } else if (!('serviceWorker' in navigator)) {
+          showHelp("Votre navigateur ne supporte pas les Service Workers (requis pour les notifications push).");
+        } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent) && !window.matchMedia('(display-mode: standalone)').matches) {
+          showHelp("Pour recevoir les notifications, installez l'app sur l'écran d'accueil (PWA) puis réessayez.");
+        } else {
+          // Vérifie la permission actuelle
+          if (window.OneSignal && OneSignal.getNotificationPermission) {
+            OneSignal.getNotificationPermission().then(function(permission) {
+              if (permission === 'denied') {
+                showHelp("Vous avez refusé les notifications. Pour réactiver, supprimez puis réinstallez l'app sur l'écran d'accueil et autorisez les notifications.");
+              } else {
+                notifBtn.style.display = 'block';
+                hideHelp();
+              }
+            });
+          } else {
+            notifBtn.style.display = 'block';
+            hideHelp();
+          }
+        }
 
         // Flash message handler
         const flashMessages = document.querySelectorAll('.flash-message');
