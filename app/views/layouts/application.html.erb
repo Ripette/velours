@@ -100,10 +100,13 @@
       }
 
       function requestNotifications() {
+        console.log('[DEBUG] Clic sur bouton bleu Activer les notifications');
         if (window.OneSignal) {
+          console.log('[DEBUG] OneSignal existe, on tente le prompt');
           OneSignal.showSlidedownPrompt();
         } else {
-          console.log('OneSignal pas encore chargé, retry dans 1s...');
+          console.log('[DEBUG] OneSignal PAS chargé');
+          alert('OneSignal n\'est pas chargé. Le script a-t-il bien été chargé ?');
           setTimeout(requestNotifications, 1000);
         }
       }
