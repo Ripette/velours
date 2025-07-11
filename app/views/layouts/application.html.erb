@@ -35,7 +35,7 @@
 
     <div id="notif-debug-message" style="position:fixed;top:0;left:0;width:100vw;z-index:10000;background:#fff3cd;color:#8B1538;font-weight:bold;padding:6px 0;text-align:center;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">Chargement JS…</div>
 
-    <button id="enable-notifications-btn" style="position:fixed; bottom:2em; left:50%; transform:translateX(-50%); z-index:9999; background:#D4A574; color:#8B1538; border:none; border-radius:18px; padding:0.5em 1.2em; font-size:0.98em; font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.12); display:block; opacity:1;">Activer les notifications 🔔</button>
+    <button id="enable-notifications-btn" style="position:fixed; bottom:2em; left:50%; transform:translateX(-50%); z-index:9999; background:#D4A574; color:#8B1538; border:none; border-radius:18px; padding:0.5em 1.2em; font-size:0.98em; font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.12); display:block; opacity:1; pointer-events:auto;" disabled="false">Activer les notifications 🔔</button>
 
     <div id="flash-container" class="flash-container">
       <% flash.each do |type, message| %>
@@ -56,6 +56,7 @@
         // --- Debug permanent en haut de page ---
         const notifDebug = document.getElementById('notif-debug-message');
         if (notifDebug) notifDebug.textContent = 'JS exécuté, attente OneSignal…';
+        console.log('JS turbo:load exécuté');
 
         // --- Flash message handler ---
         const flashMessages = document.querySelectorAll('.flash-message');
@@ -100,7 +101,9 @@
         if (notifBtn && isMobile()) {
           notifBtn.disabled = false;
           notifBtn.style.opacity = 1;
+          notifBtn.style.pointerEvents = 'auto';
           if (notifDebug) notifDebug.textContent = 'Bouton toujours actif (debug forcé)';
+          console.log('Bouton forcé actif');
 
           // Ajoute un span pour afficher le statut de permission (debug)
           let debugSpan = document.createElement('span');
@@ -164,15 +167,20 @@
 
           notifBtn.addEventListener('click', function() {
             if (notifDebug) notifDebug.textContent = 'Bouton notifications cliqué';
+            console.log('Bouton notifications cliqué');
             let onesignalStatus = 'OneSignal: ' + (window.OneSignal ? 'présent' : 'absent');
             let permissionStatus = 'Permission: inconnu';
             if (window.OneSignal && OneSignal.getNotificationPermission) {
               OneSignal.getNotificationPermission().then(function(permission) {
                 permissionStatus = 'Permission: ' + permission;
                 alert(onesignalStatus + '\n' + permissionStatus);
+                if (notifDebug) notifDebug.textContent = 'Alerte affichée : ' + onesignalStatus + ' / ' + permissionStatus;
+                console.log('Alerte affichée :', onesignalStatus, permissionStatus);
               });
             } else {
               alert(onesignalStatus + '\n' + permissionStatus);
+              if (notifDebug) notifDebug.textContent = 'Alerte affichée : ' + onesignalStatus + ' / ' + permissionStatus;
+              console.log('Alerte affichée :', onesignalStatus, permissionStatus);
             }
             notifBtn.style.display = 'none'; // Disparition immédiate
 
