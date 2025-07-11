@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   # Routes pour les favor requests
   resources :favor_requests do
+    collection do
+      delete :disconnect_partner
+    end
     member do
       post :setup_partner
       post :send_convocation
