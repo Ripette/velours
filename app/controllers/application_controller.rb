@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
     # Configuration OneSignal
     app_id = "12a609ee-318e-4423-8e34-062dc14bb6e9"
-    rest_api_key = Rails.application.credentials.onesignal[:rest_api_key]
+    rest_api_key = ENV['ONESIGNAL_REST_API_KEY']
 
     # Préparer la requête
     uri = URI("https://onesignal.com/api/v1/notifications")
