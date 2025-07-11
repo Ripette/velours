@@ -35,7 +35,7 @@
 
     <div id="notif-debug-message" style="position:fixed;top:0;left:0;width:100vw;z-index:10000;background:#fff3cd;color:#8B1538;font-weight:bold;padding:6px 0;text-align:center;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">Chargement JS…</div>
 
-    <button id="enable-notifications-btn" style="position:fixed; bottom:2em; left:50%; transform:translateX(-50%); z-index:9999; background:#D4A574; color:#8B1538; border:none; border-radius:18px; padding:0.5em 1.2em; font-size:0.98em; font-weight:600; box-shadow:0 2px 10px rgba(0,0,0,0.12); display:block; opacity:1; pointer-events:auto;" disabled="false">Activer les notifications 🔔</button>
+    <button id="enable-notifications-btn" style="position:fixed; top:1.5em; left:50%; transform:translateX(-50%); z-index:99999; background:#ffeb3b; color:#d32f2f; border:3px solid #d32f2f; border-radius:22px; padding:0.7em 2em; font-size:1.1em; font-weight:700; box-shadow:0 4px 18px rgba(0,0,0,0.18); display:block; opacity:1 !important; pointer-events:auto !important;" disabled="false">🔔 Activer les notifications (DEBUG)</button>
 
     <div id="flash-container" class="flash-container">
       <% flash.each do |type, message| %>
@@ -100,10 +100,21 @@
         const notifBtn = document.getElementById('enable-notifications-btn');
         if (notifBtn && isMobile()) {
           notifBtn.disabled = false;
-          notifBtn.style.opacity = 1;
+          notifBtn.style.opacity = '1';
           notifBtn.style.pointerEvents = 'auto';
-          if (notifDebug) notifDebug.textContent = 'Bouton toujours actif (debug forcé)';
-          console.log('Bouton forcé actif');
+          notifBtn.style.background = '#ffeb3b';
+          notifBtn.style.color = '#d32f2f';
+          notifBtn.style.border = '3px solid #d32f2f';
+          notifBtn.style.zIndex = '99999';
+          notifBtn.style.top = '1.5em';
+          notifBtn.style.bottom = '';
+          notifBtn.style.fontWeight = '700';
+          notifBtn.style.fontSize = '1.1em';
+          notifBtn.style.padding = '0.7em 2em';
+          notifBtn.style.borderRadius = '22px';
+          notifBtn.style.boxShadow = '0 4px 18px rgba(0,0,0,0.18)';
+          if (notifDebug) notifDebug.textContent = 'Bouton DEBUG toujours actif (z-index max)';
+          console.log('Bouton DEBUG forcé actif');
 
           // Ajoute un span pour afficher le statut de permission (debug)
           let debugSpan = document.createElement('span');
@@ -166,8 +177,8 @@
           notifBtn.style.opacity = 0.5;
 
           notifBtn.addEventListener('click', function() {
-            if (notifDebug) notifDebug.textContent = 'Bouton notifications cliqué';
-            console.log('Bouton notifications cliqué');
+            if (notifDebug) notifDebug.textContent = 'Bouton notifications cliqué (handler JS appelé)';
+            console.log('Bouton notifications cliqué (handler JS appelé)');
             let onesignalStatus = 'OneSignal: ' + (window.OneSignal ? 'présent' : 'absent');
             let permissionStatus = 'Permission: inconnu';
             if (window.OneSignal && OneSignal.getNotificationPermission) {
@@ -182,22 +193,7 @@
               if (notifDebug) notifDebug.textContent = 'Alerte affichée : ' + onesignalStatus + ' / ' + permissionStatus;
               console.log('Alerte affichée :', onesignalStatus, permissionStatus);
             }
-            notifBtn.style.display = 'none'; // Disparition immédiate
-
-            // Retry toutes les 2s pendant 10s max
-            let retryCount = 0;
-            function retryPermissionCheck() {
-              retryCount++;
-              updateDebugPermission();
-              if (retryCount < 5) { // 5 fois toutes les 2s = 10s
-                if (debugSpan.textContent.includes('inconnu')) {
-                  setTimeout(retryPermissionCheck, 2000);
-                }
-              } else if (debugSpan.textContent.includes('inconnu')) {
-                debugSpan.textContent = 'Erreur: OneSignal ne répond pas.';
-              }
-            }
-            setTimeout(retryPermissionCheck, 2000);
+            // Ne cache plus le bouton après clic
           });
         }
 
